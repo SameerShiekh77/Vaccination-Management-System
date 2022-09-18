@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 16, 2022 at 04:21 PM
+-- Generation Time: Sep 18, 2022 at 05:57 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -29,10 +29,18 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `booking_details` (
   `booking_id` int(11) NOT NULL,
-  `patient_id` int(11) NOT NULL,
+  `patient_name` varchar(25) NOT NULL,
   `room_no` int(11) NOT NULL,
-  `hospital_id` int(11) NOT NULL
+  `hospital_name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `booking_details`
+--
+
+INSERT INTO `booking_details` (`booking_id`, `patient_name`, `room_no`, `hospital_name`) VALUES
+(2, 'Jaweriya', 11, 'Aga Khan Hospital'),
+(4, 'fatima', 43, 'Ziauddin ');
 
 -- --------------------------------------------------------
 
@@ -54,14 +62,8 @@ CREATE TABLE `child_details` (
 --
 
 INSERT INTO `child_details` (`child_id`, `child_name`, `child_age`, `child_dob`, `vaccinated`, `child_f_name`) VALUES
-(1, 'hiba', 26, '2022-09-13', 'yes', 'altaf'),
-(2, 'jaweria', 19, '2013-09-04', 'yes', 'zulfiqar'),
-(3, 'maria', 45, '2012-09-04', 'no', 'zulfiqar'),
-(4, 'fatima', 34, '2012-09-18', 'no', 'shezad'),
-(5, 'khan', 12, '2020-12-29', 'yes', 'khanzada'),
-(6, 'khan', 12, '2020-12-29', 'yes', 'khanzada'),
-(7, 'khan', 12, '2020-12-29', 'yes', 'khanzada'),
-(9, 'ali', 23, '2022-09-08', 'yes', 'alikhan');
+(7, 'shahzaib', 213, '2020-12-29', 'yes', 'khanzada324'),
+(12, 'fatima', 45, '2004-02-23', 'yes', 'khan');
 
 -- --------------------------------------------------------
 
@@ -72,9 +74,20 @@ INSERT INTO `child_details` (`child_id`, `child_name`, `child_age`, `child_dob`,
 CREATE TABLE `hopital_list` (
   `hospital_id` int(11) NOT NULL,
   `hospital_name` varchar(50) NOT NULL,
-  `hospital_timing` datetime DEFAULT NULL,
-  `doctor_counts` int(11) NOT NULL
+  `hospital_timing` int(12) DEFAULT NULL,
+  `doctor_counts` int(11) NOT NULL,
+  `timing_from` time DEFAULT NULL,
+  `timing_to` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `hopital_list`
+--
+
+INSERT INTO `hopital_list` (`hospital_id`, `hospital_name`, `hospital_timing`, `doctor_counts`, `timing_from`, `timing_to`) VALUES
+(1, 'Abbassi Shaheed Hospital', 24, 100, '09:00:00', '22:34:00'),
+(4, 'Burhani', 23, 244, '06:41:00', '21:36:00'),
+(6, 'Ziadduin Hospital', 12, 100, '00:00:00', '12:00:00');
 
 -- --------------------------------------------------------
 
@@ -86,21 +99,19 @@ CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `dt` datetime NOT NULL DEFAULT current_timestamp()
+  `dt` datetime NOT NULL DEFAULT current_timestamp(),
+  `username` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `vacinate_peoples`
+-- Dumping data for table `users`
 --
 
-CREATE TABLE `vacinate_peoples` (
-  `vacinate_id` int(11) NOT NULL,
-  `pfizer` varchar(50) NOT NULL,
-  `moderna` varchar(50) NOT NULL,
-  `astrazeneca` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+INSERT INTO `users` (`user_id`, `email`, `password`, `dt`, `username`) VALUES
+(8, 'sameer12@gmail.com', '$2y$10$.6DnqliJwN/II5nbocRUEu6PM27pXuyv24EXdXog2VqNGRM.w56sC', '2022-09-18 20:12:19', 'SAMEER'),
+(9, 'adnan@gmail.com', '$2y$10$srTBM3oaN65DliOqnfPqKeDeY6x8yZAWsJU7FS.6SvkkQt3GtomfC', '2022-09-18 20:13:54', 'adnan'),
+(10, 'sameershaikh@gmail.com', '$2y$10$MQpx5L.ReVHHHLllJAXwteH9L6wUz/lA.Wi/DgpmQvdok7bqVBLS2', '2022-09-18 20:41:26', 'sameer'),
+(11, 'sameer@gmail.com', '$2y$10$VnKWuZLuVgQOXwlcfoS6CuPk01ok9wTivx4o8if.wt6NZHBbC2K8q', '2022-09-18 20:45:38', 'muhammadsameer');
 
 --
 -- Indexes for dumped tables
@@ -128,13 +139,8 @@ ALTER TABLE `hopital_list`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
-
---
--- Indexes for table `vacinate_peoples`
---
-ALTER TABLE `vacinate_peoples`
-  ADD PRIMARY KEY (`vacinate_id`);
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -144,31 +150,25 @@ ALTER TABLE `vacinate_peoples`
 -- AUTO_INCREMENT for table `booking_details`
 --
 ALTER TABLE `booking_details`
-  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `booking_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `child_details`
 --
 ALTER TABLE `child_details`
-  MODIFY `child_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `child_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `hopital_list`
 --
 ALTER TABLE `hopital_list`
-  MODIFY `hospital_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `hospital_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `vacinate_peoples`
---
-ALTER TABLE `vacinate_peoples`
-  MODIFY `vacinate_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
